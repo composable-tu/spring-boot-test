@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @Entity
 public class User {
-    @Id
-    private String name;
-    private String password;
+  @Id private String account;
+  private String password;
 }

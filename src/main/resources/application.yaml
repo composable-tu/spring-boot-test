@@ -11,3 +11,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+jwt:
+  secret: your-super-secret-key-that-is-at-least-32-characters-long
+  expiration: 86400000  # 24小时（毫秒）
+
