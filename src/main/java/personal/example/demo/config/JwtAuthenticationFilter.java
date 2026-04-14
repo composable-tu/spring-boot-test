@@ -12,15 +12,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import personal.example.demo.repository.UserRepository;
 import personal.example.demo.utils.JwtUtil;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtUtil jwtUtil;
+  private final UserRepository userRepository;
 
-  public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+  public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository) {
     this.jwtUtil = jwtUtil;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -41,13 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     try {
       if (jwtUtil.isTokenValid(token)) {
-        String username = jwtUtil.extractUsername(token);
+        String account = jwtUtil.extractAccount(token);
+
+        userRepository.findByAccount(account).orElseThrow(() -> new RuntimeException("用户不存在"));
 
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
-                username, null,
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-            );
+                account, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }

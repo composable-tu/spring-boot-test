@@ -17,28 +17,23 @@ public class JwtUtil {
 
   public JwtUtil(JwtConfig jwtConfig) {
     this.jwtConfig = jwtConfig;
-    this.secretKey = Keys.hmacShaKeyFor(
-        jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8)
-    );
+    this.secretKey = Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes(StandardCharsets.UTF_8));
   }
 
-  public String generateToken(String username) {
+  public String generateToken(String account) {
     return Jwts.builder()
-        .subject(username)
+        .subject(account)
         .issuedAt(new Date())
-        .expiration(new Date(
-            System.currentTimeMillis() + jwtConfig.getExpiration()
-        ))
+        .expiration(new Date(System.currentTimeMillis() + jwtConfig.getExpiration()))
         .signWith(secretKey)
         .compact();
   }
 
   public Claims extractClaims(String token) {
-    return Jwts.parser().verifyWith(secretKey).build()
-        .parseSignedClaims(token).getPayload();
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
   }
 
-  public String extractUsername(String token) {
+  public String extractAccount(String token) {
     return extractClaims(token).getSubject();
   }
 
