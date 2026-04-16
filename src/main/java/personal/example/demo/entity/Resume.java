@@ -1,10 +1,14 @@
 package personal.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Resume {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

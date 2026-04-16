@@ -23,10 +23,7 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<BaseReponse<?>> signup(@RequestBody AuthRequest request) {
     try {
-      User user = new User();
-      user.setAccount(request.getAccount());
-      user.setPassword(request.getPassword());
-
+      User user = new User(request.getAccount(), request.getPassword());
       userService.save(user);
       return ResponseEntity.ok(BaseReponse.success("注册成功，请登录"));
     } catch (Exception e) {
