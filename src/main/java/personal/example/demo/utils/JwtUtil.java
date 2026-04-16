@@ -37,6 +37,11 @@ public class JwtUtil {
     return extractClaims(token).getSubject();
   }
 
+  public String extractAccountFromHeader(String authorization) {
+    String token = authorization.replace("Bearer ", "");
+    return extractAccount(token);
+  }
+
   public boolean isTokenValid(String token) {
     try {
       extractClaims(token);

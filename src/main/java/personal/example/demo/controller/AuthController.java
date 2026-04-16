@@ -1,5 +1,6 @@
 package personal.example.demo.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,14 +15,10 @@ import personal.example.demo.utils.JwtUtil;
 
 @RestController
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class AuthController {
   private final UserService userService;
   private final JwtUtil jwtUtil;
-
-  public AuthController(UserService userService, JwtUtil jwtUtil) {
-    this.userService = userService;
-    this.jwtUtil = jwtUtil;
-  }
 
   @PostMapping("/signup")
   public ResponseEntity<BaseReponse<?>> signup(@RequestBody AuthRequest request) {
