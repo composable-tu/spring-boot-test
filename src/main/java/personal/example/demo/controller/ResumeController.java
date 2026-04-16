@@ -7,7 +7,7 @@ import org.apache.tika.exception.TikaException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import personal.example.demo.common.BaseReponse;
+import personal.example.demo.common.BaseResponse;
 import personal.example.demo.entity.Resume;
 import personal.example.demo.entity.User;
 import personal.example.demo.repository.UserRepository;
@@ -38,12 +38,12 @@ public class ResumeController {
 
       Resume resume = new Resume(null, user, name, content);
       resumeService.save(resume);
-      return ResponseEntity.ok(BaseReponse.success("上传成功"));
+      return ResponseEntity.ok(BaseResponse.success("上传成功"));
     } catch (TikaException e) {
       return ResponseEntity.badRequest()
-          .body(BaseReponse.badRequest("Tika 解析失败: " + e.getMessage()));
+          .body(BaseResponse.badRequest("Tika 解析失败: " + e.getMessage()));
     } catch (Exception e) {
-      return ResponseEntity.badRequest().body(BaseReponse.badRequest("上传失败: " + e.getMessage()));
+      return ResponseEntity.badRequest().body(BaseResponse.badRequest("上传失败: " + e.getMessage()));
     }
   }
 }
