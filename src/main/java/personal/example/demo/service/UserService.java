@@ -34,4 +34,8 @@ public class UserService {
 
     return user;
   }
+
+  public User findByAccount(String account) {
+    return userRepository.findByAccount(account).orElseThrow(() -> new RuntimeException("用户不存在"));
+  }
 }

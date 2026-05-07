@@ -1,27 +1,26 @@
 package personal.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Resume {
+public class InterviewThread {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false)
-  private Long id;
+  private String id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "account", nullable = false)
   private User user;
 
-  @Column(nullable = false)
-  private String name;
-
-  @Column(nullable = false)
-  private String content;
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 }
