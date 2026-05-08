@@ -26,12 +26,13 @@ public class InterviewService {
     return interviewThreadRepository.findByUserAccount(account);
   }
 
-  public void save(String account) {
+  public InterviewThread save(String account) {
     User user = userService.findByAccount(account);
     InterviewThread interviewThread = new InterviewThread();
     interviewThread.setId(generateThreadId(account));
     interviewThread.setUser(user);
     interviewThreadRepository.save(interviewThread);
+    return interviewThread;
   }
 
   public InterviewThread findByThreadId(String threadId) {

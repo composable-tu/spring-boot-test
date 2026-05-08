@@ -1,8 +1,10 @@
 package personal.example.demo.client;
 
+import java.time.Duration;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import personal.example.demo.common.LangChainResponse;
@@ -12,6 +14,10 @@ public class LangChainClient {
   private final RestClient restClient;
 
   public LangChainClient(@Value("${langchain.base-url}") String baseUrl) {
+    SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+    factory.setConnectTimeout(Duration.ofSeconds(30));
+    factory.setReadTimeout(Duration.ofSeconds(300)); // AI Agent 服务处理时间较长，因此这里设置超时时间为 5 分钟
+
     this.restClient =
         RestClient.builder()
             .baseUrl(baseUrl)
