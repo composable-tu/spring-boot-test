@@ -1,12 +1,12 @@
 package personal.example.demo.client;
 
 import java.time.Duration;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import personal.example.demo.common.LangChainChatRequest;
 import personal.example.demo.common.LangChainResponse;
 
 @Component
@@ -21,6 +21,7 @@ public class LangChainClient {
     this.restClient =
         RestClient.builder()
             .baseUrl(baseUrl)
+            .requestFactory(factory)
             .defaultHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             .build();
   }
@@ -31,7 +32,7 @@ public class LangChainClient {
           .post()
           .uri("/chat/{threadId}", threadId)
           .contentType(MediaType.APPLICATION_JSON)
-          .body(Map.of("message", message))
+          .body(new LangChainChatRequest(message))
           .retrieve()
           .body(LangChainResponse.class);
     } catch (Exception e) {
