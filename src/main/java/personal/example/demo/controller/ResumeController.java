@@ -1,6 +1,8 @@
 package personal.example.demo.controller;
 
 import java.io.InputStream;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
@@ -43,6 +45,19 @@ public class ResumeController {
           .body(BaseResponse.badRequest("Tika 解析失败: " + e.getMessage()));
     } catch (Exception e) {
       return ResponseEntity.badRequest().body(BaseResponse.badRequest("上传失败: " + e.getMessage()));
+    }
+  }
+
+  @GetMapping("/list")
+  public ResponseEntity<BaseResponse<?>> getResumeList(
+          @RequestHeader("Authorization") String authorization) {
+    try {
+      String account = jwtUtil.extractAccountFromHeader(authorization);
+      List<Resume> resumes = resumeService.findByUserAccount(account);
+      return ResponseEntity.ok(BaseResponse.success(resumes));
+    } catch (Exception e) {
+      return ResponseEntity.badRequest()
+        .body(BaseResponse.badRequest("获取简历列表失败: " + e.getMessage()));
     }
   }
 }
